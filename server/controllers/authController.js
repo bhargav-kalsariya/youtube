@@ -1,24 +1,30 @@
+const bcrypt = require('bcrypt');
+
 const User = require("../models/User");
+const { Success, Error } = require("../utility/responseWrapper");
 
 const signupHandler = async (req, res) => {
 
     const { email, password } = req.body;
 
     if (!email || !password) {
-        res.status(403).send({ message: 'Please enter your email and password' });
-        return;
+        return res.send(Error(403, "Email and password both are required"));
     }
 
     const verifyMail = await User.findOne({ email });
 
     if (!verifyMail) {
-        const newUser = new User({ email, password });
+
+        const securedPassword = await bcrypt.hash(password.toString(), 10);
+
+        const newUser = new User({ email, password: securedPassword });
+
         await newUser.save();
-        res.status(200).send(newUser);
-        return;
+        return res.send(Success(200, newUser));
+
     }
 
-    res.status(403).send({ message: 'User already exists' });
+    res.send(Error(403, 'User already exists'));
 
 }
 
@@ -27,29 +33,29 @@ const loginHandler = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        res.status(403).send({ message: 'Email and password both required' });
-        return;
+        return res.send(Error(403, 'Email and password both required '));
     }
 
     try {
+
         const verifiedUser = await User.findOne({ email });
 
         if (!verifiedUser) {
-            res.status(403).send({ message: 'User not found' });
-            return;
+            return res.send(Error(404, 'User not found'));
         }
 
-        const authorizedUser = verifiedUser.password === password;
+        const authorizedUser = await bcrypt.compare(password.toString(), verifiedUser.password);
 
         if (!authorizedUser) {
-            res.status(403).send({ message: 'Invalid password' });
-            return;
+            return res.send(Error(403, 'Invalid password'));
         }
 
-        res.status(200).send({ message: 'User authorized and you are logged in now' });
+        res.send(Success(200, 'User authorized and you are logged in now'));
+
     } catch (error) {
-        console.error(error);
-        res.status(500).send({ message: 'Internal Server Error' });
+
+        res.send(Error(500, error.message));
+
     }
 };
 
