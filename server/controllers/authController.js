@@ -14,22 +14,30 @@ const signupHandler = async (req, res) => {
         return res.send(Error(403, "Email and password both are required"));
     }
 
-    const verifyMail = await User.findOne({ email });
+    try {
 
-    if (!verifyMail) {
+        const verifyMail = await User.findOne({ email });
 
-        const securedPassword = await bcrypt.hash(password.toString(), 10);
+        if (!verifyMail) {
 
-        const newUser = new User({ email, password: securedPassword });
+            const securedPassword = await bcrypt.hash(password.toString(), 10);
 
-        await newUser.save();
-        return res.send(Success(200, newUser));
+            const newUser = new User({ email, password: securedPassword });
 
-    }
+            await newUser.save();
+            return res.send(Success(200, newUser));
 
-    res.send(Error(403, 'User already exists'));
+        }
 
-}
+        return res.send(Error(403, 'User already exists'));
+
+    } catch (error) {
+
+        return res.send(Error(500, error));
+
+    };
+
+};
 
 const loginHandler = async (req, res) => {
 
@@ -42,7 +50,6 @@ const loginHandler = async (req, res) => {
     try {
 
         const verifiedUser = await User.findOne({ email });
-        const accessTokenSecretKey = process.env.ACCESS_TOKEN_SECRETKEY;
 
         if (!verifiedUser) {
             return res.send(Error(404, 'User not found'));
@@ -54,23 +61,63 @@ const loginHandler = async (req, res) => {
             return res.send(Error(403, 'Invalid password'));
         }
 
+        const accessToken = generateAccessToken({ generateAccessTokenById: authorizedUser._id });
+        const refreshToken = generateRefreshToken({ generateRefreshTokenById: authorizedUser._id });
 
-        const accessToken = jwt.sign(
+        res.cookie('jwt', refreshToken, {
+            secure: true,
+            httpOnly: true
+        });
 
-            { generatedTokenByUserId: authorizedUser._id },
-            accessTokenSecretKey,
-            { expiresIn: '1d' }
-
-        );
-
-        return res.send(Success(200, accessToken));
-
+        return res.send(Success(200, { accessToken }));
 
     } catch (error) {
 
         return res.send(Error(500, error.message));
 
     }
+};
+
+const generateAccessToken = (data) => {
+
+    try {
+
+        const accessToken = jwt.sign(
+            data,
+            process.env.ACCESS_TOKEN_SECRETKEY,
+            { expiresIn: '1d' }
+        );
+
+        return accessToken;
+
+    } catch (error) {
+
+        return res.send(Error(500, error));
+
+    }
+
+};
+
+const generateRefreshToken = (data) => {
+
+    try {
+
+        const refreshToken = jwt.sign(
+
+            data,
+            process.env.REFRESH_TOKEN_SECRETKEY,
+            { expiresIn: '1y' }
+
+        );
+
+        return refreshToken;
+
+    } catch (error) {
+
+        return res.send(Error(500, error));
+
+    }
+
 };
 
 module.exports = {
