@@ -1,7 +1,10 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require("../models/User");
 const { Success, Error } = require("../utility/responseWrapper");
+
+require('dotenv').config();
 
 const signupHandler = async (req, res) => {
 
@@ -39,6 +42,7 @@ const loginHandler = async (req, res) => {
     try {
 
         const verifiedUser = await User.findOne({ email });
+        const accessTokenSecretKey = process.env.ACCESS_TOKEN_SECRETKEY;
 
         if (!verifiedUser) {
             return res.send(Error(404, 'User not found'));
@@ -50,11 +54,21 @@ const loginHandler = async (req, res) => {
             return res.send(Error(403, 'Invalid password'));
         }
 
-        res.send(Success(200, 'User authorized and you are logged in now'));
+
+        const accessToken = jwt.sign(
+
+            { generatedTokenByUserId: authorizedUser._id },
+            accessTokenSecretKey,
+            { expiresIn: '1d' }
+
+        );
+
+        return res.send(Success(200, accessToken));
+
 
     } catch (error) {
 
-        res.send(Error(500, error.message));
+        return res.send(Error(500, error.message));
 
     }
 };
