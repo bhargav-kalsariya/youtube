@@ -8,10 +8,10 @@ require('dotenv').config();
 
 const signupHandler = async (req, res) => {
 
-    const { email, password } = req.body;
+    const { email, password, username } = req.body;
 
-    if (!email || !password) {
-        return res.send(Error(403, "Email and password both are required"));
+    if (!email || !password || !username) {
+        return res.send(Error(403, "Email , password and username all are required"));
     }
 
     try {
@@ -49,7 +49,7 @@ const loginHandler = async (req, res) => {
 
     try {
 
-        const verifiedUser = await User.findOne({ email });
+        const verifiedUser = await User.findOne({ email }).select('password');
 
         if (!verifiedUser) {
             return res.send(Error(404, 'User not found'));
