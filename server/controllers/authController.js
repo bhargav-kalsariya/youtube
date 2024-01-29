@@ -25,7 +25,7 @@ const signupHandler = async (req, res) => {
             const newUser = new User({ email, password: securedPassword });
 
             await newUser.save();
-            return res.send(Success(200, newUser));
+            return res.send(Success(200, 'User created successfully'));
 
         }
 
@@ -61,8 +61,8 @@ const loginHandler = async (req, res) => {
             return res.send(Error(403, 'Invalid password'));
         }
 
-        const accessToken = generateAccessToken({ generateAccessTokenById: authorizedUser._id });
-        const refreshToken = generateRefreshToken({ generateRefreshTokenById: authorizedUser._id });
+        const accessToken = generateAccessToken({ _id: verifiedUser._id });
+        const refreshToken = generateRefreshToken({ _id: verifiedUser._id });
 
         res.cookie('jwt', refreshToken, {
             secure: true,
