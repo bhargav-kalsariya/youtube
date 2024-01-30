@@ -78,6 +78,33 @@ const loginHandler = async (req, res) => {
     }
 };
 
+const refreshTokenHandler = (req, res) => {
+
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+        return res.send(Error(404, 'refreshToken required'));
+    }
+
+    try {
+
+        const verifiedRefreshToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRETKEY);
+        const _id = verifiedRefreshToken._id;
+        const accessToken = generateAccessToken({ _id });
+
+        return res.send(Success(201, { accessToken }));
+
+    } catch (error) {
+
+        console.log(error);
+        return res.send(Error(401, 'Invalid refresh token'));
+
+    }
+
+};
+
+// functions 
+
 const generateAccessToken = (data) => {
 
     try {
@@ -123,4 +150,5 @@ const generateRefreshToken = (data) => {
 module.exports = {
     loginHandler,
     signupHandler,
+    refreshTokenHandler
 }

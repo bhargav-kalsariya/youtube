@@ -2,17 +2,21 @@ const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-const makeConnection = () => {
+const makeConnection = async () => {
 
     const mongoURI = process.env.MONGO_URI;
 
-    mongoose.connect(mongoURI)
-        .then(() => {
-            console.log('connection established');
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    try {
+
+        const connect = await mongoose.connect(mongoURI);
+        console.log(`connection established ${connect.connection.host}`);
+
+    } catch (error) {
+
+        console.log(error);
+        process.exit(1);
+
+    }
 
 };
 
