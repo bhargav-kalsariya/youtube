@@ -80,11 +80,13 @@ const loginHandler = async (req, res) => {
 
 const refreshTokenHandler = (req, res) => {
 
-    const { refreshToken } = req.body;
+    const cookies = req.cookies;
 
-    if (!refreshToken) {
+    if (!cookies.jwt) {
         return res.send(Error(404, 'refreshToken required'));
     }
+
+    const refreshToken = cookies.jwt;
 
     try {
 
