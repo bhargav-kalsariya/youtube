@@ -29,7 +29,7 @@ function Login() {
 
             <form onSubmit={handleSubmit}>
                 <label htmlFor="email">Email</label>
-                <input type="text" className='email' id="email" onChange={(e) => setEmail(e.target.value)} />
+                <input type="email" className='email' id="email" onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="password">Password</label>
                 <input type="password" className='password' id="password" onChange={(e) => setPassword(e.target.value)} />
                 <input type="submit" className='submit' />
