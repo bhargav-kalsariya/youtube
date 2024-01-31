@@ -13,13 +13,21 @@ function Signup() {
 
         e.preventDefault();
 
-        const result = await axiosClient.post('/auth/signup', {
-            username,
-            email,
-            password
-        });
+        try {
 
-        console.log(result);
+            const result = await axiosClient.post('/auth/signup', {
+                username,
+                email,
+                password
+            });
+
+            console.log(result);
+
+        } catch (e) {
+
+            console.log(e);
+
+        }
 
     };
 

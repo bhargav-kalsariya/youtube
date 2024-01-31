@@ -73,7 +73,7 @@ const loginHandler = async (req, res) => {
 
     } catch (error) {
 
-        return res.send(Error(500, error.message));
+        return res.send(Error(500, error));
 
     }
 };

@@ -12,12 +12,20 @@ function Login() {
 
         e.preventDefault();
 
-        const result = await axiosClient.post('/auth/login', {
-            email,
-            password,
-        })
+        try {
 
-        console.log(result);
+            const data = await axiosClient.post('/auth/login', {
+                email,
+                password,
+            })
+
+            console.log(data);
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
 
     }
 
