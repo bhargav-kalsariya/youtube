@@ -18,13 +18,14 @@ axiosClient.interceptors.request.use((request) => {
 axiosClient.interceptors.response.use(async (response) => {
 
     const data = response.data;
-    const originalRequest = response.config;
-    const statusCode = response.data.statusCode;
-    const error = data.error;
 
     if (data.status === 'ok') {
         return data;
     }
+
+    const originalRequest = response.config;
+    const statusCode = response.data.statusCode;
+    const error = data.error;
 
     if (statusCode === 401 && originalRequest.url === `${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`) {
         removeItem(KEY_ACCESS_TOKEN);
@@ -32,12 +33,16 @@ axiosClient.interceptors.response.use(async (response) => {
         return Promise.reject(error);
     }
 
-    if (statusCode === 401) {
-        const response = await axiosClient.get("/auth/refresh");
+    if (statusCode === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
 
-        if (response.status === 'ok') {
-            setItem(KEY_ACCESS_TOKEN, response.result.accessToken);
-            originalRequest.headers['Authorization'] = `Bearer ${response.result.accessToken}`;
+        const response = await axios.create({
+            withCredentials: true
+        }).get(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`);
+
+        if (response.data.status === 'ok') {
+            setItem(KEY_ACCESS_TOKEN, response.data.result.accessToken);
+            originalRequest.headers['Authorization'] = `Bearer ${response.data.result.accessToken}`;
 
             return axios(originalRequest);
         }

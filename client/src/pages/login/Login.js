@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import './Login.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { axiosClient } from '../../utility/axiosClient';
+import { KEY_ACCESS_TOKEN, setItem } from '../../utility/localStorageManager';
 
 function Login() {
+
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,13 +20,16 @@ function Login() {
             const data = await axiosClient.post('/auth/login', {
                 email,
                 password,
-            })
+            });
 
-            console.log(data);
+            setItem(KEY_ACCESS_TOKEN, data.accessToken);
+            navigate('/');
+
+            console.log("login", data);
 
         } catch (error) {
 
-            console.log(error);
+            console.error(error);
 
         }
 

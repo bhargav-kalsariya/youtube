@@ -23,9 +23,9 @@ function Signup() {
 
             console.log(result);
 
-        } catch (e) {
+        } catch (error) {
 
-            console.log(e);
+            console.error(error);
 
         }
 
