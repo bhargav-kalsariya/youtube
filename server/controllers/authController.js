@@ -22,7 +22,7 @@ const signupHandler = async (req, res) => {
 
             const securedPassword = await bcrypt.hash(password.toString(), 10);
 
-            const newUser = new User({ email, password: securedPassword });
+            const newUser = new User({ username, email, password: securedPassword });
 
             await newUser.save();
             return res.send(Success(200, 'User created successfully'));
