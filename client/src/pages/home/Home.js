@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { axiosClient } from '../../utility/axiosClient'
 
 function Home() {
+
+    const [videos, setVideos] = useState([]);
 
     useEffect(() => {
         fetchVideos();
@@ -9,15 +11,18 @@ function Home() {
 
     async function fetchVideos() {
         try {
-            const response = await axiosClient.get('/video/');
-            console.log("home page", response);
+            const response = await axiosClient.get('/video/getAll');
+            const UiVideoArray = response.result.allVideos;
+
+            setVideos(UiVideoArray);
+
         } catch (error) {
             console.error(error);
         }
     }
 
     return (
-        <div>home</div>
+        <h1>hi</h1>
     )
 }
 
