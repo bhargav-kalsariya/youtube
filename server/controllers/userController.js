@@ -43,6 +43,48 @@ const userSubscribeHandler = async (req, res) => {
 
 };
 
+const getSubscribedCreatorsVideos = async (req, res) => {
+
+    const currentVerifiedUserId = req._id;
+    const currentVerifiedUser = await User.findById(currentVerifiedUserId);
+
+    if (!currentVerifiedUser) {
+        return res.send(Error(404, "user not found"));
+    }
+
+    try {
+
+        const subscribedCreators = await currentVerifiedUser.populate({
+            path: 'subscription',
+            populate: {
+                path: 'videos',
+                populate: [{
+                    path: 'comments'
+                }, {
+                    path: "likes"
+                }]
+            }
+        });
+
+        let allsubscribedCreatorsVideos = [];
+
+        subscribedCreators.subscription.forEach(creator => {
+            creator.videos.forEach(video => {
+                allsubscribedCreatorsVideos.push(video);
+            });
+        });
+
+        res.send(Success(200, { videos: allsubscribedCreatorsVideos }));
+
+    } catch (error) {
+
+        res.send(Error(500, error));
+
+    }
+
+}
+
 module.exports = {
-    userSubscribeHandler
+    userSubscribeHandler,
+    getSubscribedCreatorsVideos
 }
