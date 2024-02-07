@@ -72,17 +72,45 @@ const getSubscribedCreatorsVideos = async (req, res) => {
             });
         });
 
-        res.send(Success(200, { videos: allsubscribedCreatorsVideos }));
+        return res.send(Success(200, { videos: allsubscribedCreatorsVideos }));
 
     } catch (error) {
 
-        res.send(Error(500, error));
+        return res.send(Error(500, error));
 
     }
 
 }
 
+const getMyProfileHandler = async (req, res) => {
+
+    const currentVerifiedUserId = req._id;
+    const currentVerifiedUserProfile = await User.findById(currentVerifiedUserId);
+
+    if (!currentVerifiedUserProfile) {
+        return res.send(Error(404, "user not found"));
+    }
+
+    return res.send(Success(200, { currentVerifiedUserProfile }));
+
+};
+
+const getOtherUserProfileHandler = async (req, res) => {
+
+    const { userIdForData } = req.body;
+    const verifiedUserData = await User.findById(userIdForData);
+
+    if (!verifiedUserData) {
+        return res.send(Error(404, 'User data not found'));
+    }
+
+    return res.send(Success(200, { verifiedUserData }));
+
+};
+
 module.exports = {
     userSubscribeHandler,
-    getSubscribedCreatorsVideos
+    getSubscribedCreatorsVideos,
+    getMyProfileHandler,
+    getOtherUserProfileHandler
 }

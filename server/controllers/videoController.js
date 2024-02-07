@@ -63,12 +63,14 @@ const likeUnlikeVideosHandler = async (req, res) => {
 
             videoTolike.likes.splice(likedUserIndex, 1);
             await videoTolike.save();
+
             return res.send(Success(200, "video unliked successfully"));
 
         } else {
 
             videoTolike.likes.push(currentVerifiedUserId);
             await videoTolike.save();
+
             return res.send(Success(200, 'video liked successfully'));
 
         }
