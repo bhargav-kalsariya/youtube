@@ -58,11 +58,9 @@ const getSubscribedCreatorsVideos = async (req, res) => {
             path: 'subscription',
             populate: {
                 path: 'videos',
-                populate: [{
+                populate: {
                     path: 'comments'
-                }, {
-                    path: "likes"
-                }]
+                }
             }
         });
 

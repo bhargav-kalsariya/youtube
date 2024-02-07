@@ -2,9 +2,15 @@ const Video = require("../models/Video");
 const User = require("../models/User");
 const { Success, Error } = require("../utility/responseWrapper")
 
-const getAllVideoHandler = (req, res) => {
+const getAllVideoHandler = async (req, res) => {
 
-    return res.send(Success(200, 'All video access granted'));
+    const allVideos = await Video.find();
+
+    if (!allVideos) {
+        return res.send(Error(404, 'no videos ,if creator post the video then it will show here'));
+    }
+
+    return res.send(Success(200, { allVideos }));
 
 }
 
