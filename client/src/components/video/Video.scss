@@ -1,0 +1,26 @@
+ul li {
+  list-style: none;
+}
+
+.Video-page {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+
+  .video-wrapper {
+    .video {
+      width: 400px;
+      height: 250px;
+      background-color: rgba(0, 0, 0, 0.515);
+      border-radius: 10px;
+    }
+    .video-info {
+      padding: 5px;
+
+      .title {
+        font-size: 1.2rem;
+        font-weight: normal;
+      }
+    }
+  }
+}
