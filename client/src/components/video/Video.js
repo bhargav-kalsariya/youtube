@@ -31,10 +31,11 @@ function Video() {
                 <Sidebar />
             </div>
             <div className='video-box'>
-                {videos.map((video, index) => {
-                    return <Videos key={index} video={video} />
-                })}
-
+                <div className="video">
+                    {videos.map((video, index) => {
+                        return <Videos key={index} video={video} />
+                    })}
+                </div>
             </div>
         </div>
     )

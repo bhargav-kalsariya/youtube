@@ -1,9 +1,22 @@
 .Main {
   display: flex;
+  gap: 7px;
+
   .sidebar {
     flex-basis: 15%;
   }
-  .video {
+
+  .video-box {
     flex-basis: 85%;
+
+    .video {
+      border: 1px solid black;
+      border-right: none;
+      margin-top: 60px;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
   }
 }
