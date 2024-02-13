@@ -1,0 +1,9 @@
+.Main {
+  display: flex;
+  .sidebar {
+    flex-basis: 15%;
+  }
+  .video {
+    flex-basis: 85%;
+  }
+}

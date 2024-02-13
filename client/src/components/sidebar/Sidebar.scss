@@ -1,3 +1,14 @@
 .Sidebar {
-  border: 1px solid violet;
+  border: 1px solid rgba(0, 0, 0, 0.537);
+  height: 100vh;
+
+  .home,
+  .shorts,
+  .subscriptions,
+  .settings {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 }
