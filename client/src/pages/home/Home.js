@@ -1,44 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { axiosClient } from "../../utility/axiosClient";
-import Video from "../../components/video/Video";
-
-import './Home.scss';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import './Home.scss'
+import Navbar from "../../components/navbar/Navbar";
+import Sidebar from "../../components/sidebar/Sidebar";
 
 function Home() {
-    const [videos, setVideos] = useState([]);
-
-    useEffect(() => {
-
-        fetchVideos();
-
-    }, []);
-
-    async function fetchVideos() {
-        try {
-
-            const response = await axiosClient.get("/video/getAll");
-            const UiVideoArray = response.result.allVideos;
-
-            setVideos(UiVideoArray);
-
-        } catch (error) {
-
-            console.error(error);
-
-        }
-    }
-
-    return (
-        <ul className="Video">
-            {videos.map((video, index) => {
-                return (
-                    <li key={index}>
-                        <Video video={video} />
-                    </li>
-                );
-            })}
-        </ul>
-    );
+	return (
+		<div className="Home">
+			<Navbar />
+			<Sidebar />
+			<Outlet />
+		</div>
+	);
 }
 
 export default Home;
