@@ -20,7 +20,7 @@ function Video() {
             return console.log('Failed to get all videos');
         }
 
-        const mapVideos = response.result.allVideos;
+        const mapVideos = response.result?.allVideos;
         setVideos(mapVideos);
 
     }

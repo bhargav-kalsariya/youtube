@@ -8,21 +8,13 @@ function Profile() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
-    const titleRef = useRef(null);
-    const descRef = useRef(null);
-
     async function handleSubmit(e) {
         e.preventDefault();
-
-        setTitle(titleRef.current);
-        setDescription(descRef.current);
 
         const response = await axiosClient.post('/video/create', {
             title,
             description
         });
-
-        return console.log(response);
 
     }
 
@@ -30,21 +22,37 @@ function Profile() {
         <div className='Profile'>
             <div className="profile-wrapper">
                 <div className="left-part">
+                    <span>Create videos :-</span>
                     <div className="create-video">
                         <div className="video-part">
-                            video comes here
+                            <img src={img} alt="" />
                         </div>
-                        <div className="video-data-part">
-                            <label htmlFor="title"></label>
-                            <input type="text" id="title" ref={titleRef} />
-                            <label htmlFor="description"></label>
-                            <input type="text" id="description" ref={descRef} />
+                        <div className="video-data">
+                            <label htmlFor="title">Title :-</label>
+                            <input
+                                type="text"
+                                id="title"
+                                onChange={(e) => {
+                                    setTitle(e.target.value)
+                                }}
+                                placeholder='add title here'
+                            />
+                            <label htmlFor="description">Description :-</label>
+                            <textarea
+                                id="description"
+                                onChange={(e) => {
+                                    setDescription(e.target.value)
+                                }}
+                                placeholder='add description here'
+                            />
                             <button onClick={handleSubmit}>Create video</button>
                         </div>
                     </div>
-                    <h3>My videos</h3>
-                    <div className="your-videos">
+                    <div className="created-video-by-you">
+                        <span>My videos :-</span>
+                        <div className="your-videos">
 
+                        </div>
                     </div>
                 </div>
                 <div className="right-part">
