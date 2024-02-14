@@ -16,6 +16,10 @@ function Profile() {
             description
         });
 
+        if (response) {
+            alert('video created successfully');
+        }
+
     }
 
     return (
@@ -46,12 +50,6 @@ function Profile() {
                                 placeholder='add description here'
                             />
                             <button onClick={handleSubmit}>Create video</button>
-                        </div>
-                    </div>
-                    <div className="created-video-by-you">
-                        <span>My videos :-</span>
-                        <div className="your-videos">
-
                         </div>
                     </div>
                 </div>
