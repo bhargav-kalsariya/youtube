@@ -9,7 +9,7 @@ function Profile() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
-    const [videos, setVideos] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
 
     useEffect(() => {
         fetchMyVideos();
@@ -18,10 +18,9 @@ function Profile() {
     async function fetchMyVideos() {
 
         const response = await axiosClient.get('/user/profile');
-        console.log(response);
+        const mapVideos = response.result?.currentVerifiedUserProfile;
 
-        const mapVideos = response.result?.currentVerifiedUserProfile?.videos;
-        setVideos(mapVideos);
+        setUserInfo(mapVideos);
 
     }
 
@@ -72,9 +71,9 @@ function Profile() {
                     <div className="my-videos">
                         <span>My videos :-</span>
                         {
-                            videos &&
+                            userInfo.videos &&
                             <div className="video">
-                                {videos.map((video, index) => {
+                                {userInfo.videos.map((video, index) => {
                                     return <Videos key={index} video={video} />
                                 })}
                             </div>
@@ -85,11 +84,11 @@ function Profile() {
                     <div className="profile-box">
                         <div className="profile-img">
                             <img src={img} alt="profile" />
-                            <h2> Creator</h2>
+                            <h2> {userInfo.email}</h2>
                         </div>
                         <div className="profile-info">
-                            <h4>subscribers <br /> 455</h4>
-                            <h4>subscription <br />300</h4>
+                            <h4>subscribers <br /> {userInfo.subscribers?.length > 0 ? userInfo.subscribers?.length : 0}</h4>
+                            <h4>subscription <br />{userInfo.subscription?.length > 0 ? userInfo.subscription?.length : 0}</h4>
                         </div>
                         <div className="profile-actions">
                             <button>Subscribe</button>

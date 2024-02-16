@@ -4,7 +4,7 @@ const { Success, Error } = require("../utility/responseWrapper")
 
 const getAllVideoHandler = async (req, res) => {
 
-    const allVideos = await Video.find();
+    const allVideos = await Video.find().populate({ path: 'owner' });
 
     if (!allVideos) {
         return res.send(Error(404, 'no videos ,if creator post the video then it will show here'));

@@ -1,20 +1,17 @@
 import React from 'react'
 import './Videos.scss';
-import img from '../../images/1692860352616.jpg'
 
 function Videos(video) {
-
-    console.log(video);
 
     return (
         <div className='Videos'>
             <div className="video-main-box">
                 <div className="video-up-box">
-                    {video.video.id}
+                    {video.video.owner.email}
                 </div>
                 <div className="video-bottom-box">
                     <div className="channel-icon">
-                        <img src={img} alt="icon" />
+                        <img src='' alt={video.video.owner.subscribers.length} />
                     </div>
                     <div className="video-details">
                         {video.video.title} <br />

@@ -91,7 +91,12 @@ const getMyProfileHandler = async (req, res) => {
         return res.send(Error(404, "user not found"));
     }
 
-    await currentVerifiedUserProfile.populate({ path: 'videos' });
+    await currentVerifiedUserProfile.populate({
+        path: 'videos',
+        populate: {
+            path: 'owner'
+        }
+    })
 
     return res.send(Success(200, { currentVerifiedUserProfile }));
 
