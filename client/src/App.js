@@ -14,7 +14,7 @@ function App() {
                 <Route element={<Home />} >
                     <Route path="/" element={<Video />} />
                     <Route path='/subscribedVideos' element={<SubVideo />} />
-                    <Route path="/profile/:userId" element={<Profile />} />
+                    <Route path="/profile/:userIdForData" element={<Profile />} />
                 </Route>
             </Route>
             <Route path="login" element={<Login />} />

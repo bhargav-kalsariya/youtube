@@ -1,7 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Videos.scss';
+import { axiosClient } from '../../utility/axiosClient';
+import { useNavigate } from 'react-router-dom';
 
 function Videos(video) {
+
+    const navigate = useNavigate();
+    const userIdForData = video.video.owner._id;
+
+    const [userData, setUserData] = useState({});
+
+    async function handleProfileClick() {
+
+        const response = await axiosClient.post(`/user/profileOthers/${userIdForData}`, {
+            userIdForData
+        });
+
+        const userDataObj = response.result.verifiedUserData;
+        setUserData(userDataObj);
+    }
 
     return (
         <div className='Videos'>
@@ -10,8 +27,8 @@ function Videos(video) {
                     {video.video.owner.email}
                 </div>
                 <div className="video-bottom-box">
-                    <div className="channel-icon">
-                        <img src='' alt={video.video.owner.subscribers.length} />
+                    <div className="channel-icon" onClick={handleProfileClick}>
+                        <img src='' alt={video.video.owner.subscribers?.length} />
                     </div>
                     <div className="video-details">
                         {video.video.title} <br />

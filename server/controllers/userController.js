@@ -104,7 +104,7 @@ const getMyProfileHandler = async (req, res) => {
 
 const getOtherUserProfileHandler = async (req, res) => {
 
-    const { userIdForData } = req.body;
+    const { userIdForData } = req.params;
     const verifiedUserData = await User.findById(userIdForData);
 
     if (!verifiedUserData) {

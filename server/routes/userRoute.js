@@ -5,6 +5,6 @@ const protectedRoute = require('../middlewares/protectedRoute');
 router.get('/subscribedVideos', protectedRoute, userController.getSubscribedCreatorsVideos);
 router.get('/profile', protectedRoute, userController.getMyProfileHandler);
 router.post('/subscribe', protectedRoute, userController.userSubscribeHandler);
-router.post('/profileOthers', protectedRoute, userController.getOtherUserProfileHandler);
+router.post('/profileOthers/:userIdForData', protectedRoute, userController.getOtherUserProfileHandler);
 
 module.exports = router;
