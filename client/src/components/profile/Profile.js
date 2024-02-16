@@ -1,12 +1,29 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Profile.scss'
 import { axiosClient } from './../../utility/axiosClient';
 import img from './../../images/1692860352616.jpg'
+import Videos from '../videos/Videos';
 
 function Profile() {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+
+    const [videos, setVideos] = useState([]);
+
+    useEffect(() => {
+        fetchMyVideos();
+    }, [])
+
+    async function fetchMyVideos() {
+
+        const response = await axiosClient.get('/user/profile');
+        console.log(response);
+
+        const mapVideos = response.result?.currentVerifiedUserProfile?.videos;
+        setVideos(mapVideos);
+
+    }
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -51,6 +68,17 @@ function Profile() {
                             />
                             <button onClick={handleSubmit}>Create video</button>
                         </div>
+                    </div>
+                    <div className="my-videos">
+                        <span>My videos :-</span>
+                        {
+                            videos &&
+                            <div className="video">
+                                {videos.map((video, index) => {
+                                    return <Videos key={index} video={video} />
+                                })}
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="right-part">

@@ -5,6 +5,7 @@ import Home from "./pages/home/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./components/profile/Profile";
 import Video from "./components/video/Video";
+import SubVideo from "./components/subscribedVideo/SubVideo";
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
             <Route element={<ProtectedRoute />} >
                 <Route element={<Home />} >
                     <Route path="/" element={<Video />} />
+                    <Route path='/subscribedVideos' element={<SubVideo />} />
                     <Route path="/profile/:userId" element={<Profile />} />
                 </Route>
             </Route>

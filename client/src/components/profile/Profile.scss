@@ -1,7 +1,6 @@
 .Profile {
   .profile-wrapper {
     display: flex;
-    height: 100vh;
     gap: 10px;
     .left-part {
       flex: 2;
@@ -56,8 +55,16 @@
           }
         }
       }
-      .created-video-by-you {
-        margin-top: 20px;
+      .my-videos {
+        span {
+          display: block;
+          padding-block: 10px;
+        }
+        .video {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 15px;
+        }
       }
     }
     .right-part {
