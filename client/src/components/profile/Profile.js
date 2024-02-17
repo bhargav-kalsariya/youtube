@@ -3,9 +3,12 @@ import './Profile.scss'
 import { axiosClient } from './../../utility/axiosClient';
 import img from './../../images/1692860352616.jpg'
 import Videos from '../videos/Videos';
+import { useLocation } from 'react-router-dom';
 
 function Profile() {
-
+    const location = useLocation();
+    const userData = location.state?.userData;
+    console.log(userData);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -37,6 +40,15 @@ function Profile() {
         }
 
     }
+
+    const defaultProfileDetails = {
+        email: `${userInfo.email}`,
+        subscribers: `${userInfo.subscribers}`,
+        subscription: `${userInfo.subscription} `,
+        videos: `${userInfo.videos}`
+    };
+
+    const { email, subscription, subscribers, videos } = userData || defaultProfileDetails;
 
     return (
         <div className='Profile'>
@@ -71,9 +83,9 @@ function Profile() {
                     <div className="my-videos">
                         <span>My videos :-</span>
                         {
-                            userInfo.videos &&
+                            videos &&
                             <div className="video">
-                                {userInfo.videos.map((video, index) => {
+                                {videos.map((video, index) => {
                                     return <Videos key={index} video={video} />
                                 })}
                             </div>
@@ -84,11 +96,11 @@ function Profile() {
                     <div className="profile-box">
                         <div className="profile-img">
                             <img src={img} alt="profile" />
-                            <h2> {userInfo.email}</h2>
+                            <h2> {email}</h2>
                         </div>
                         <div className="profile-info">
-                            <h4>subscribers <br /> {userInfo.subscribers?.length > 0 ? userInfo.subscribers?.length : 0}</h4>
-                            <h4>subscription <br />{userInfo.subscription?.length > 0 ? userInfo.subscription?.length : 0}</h4>
+                            <h4>subscribers <br /> {subscribers?.length > 0 ? subscribers?.length : 0}</h4>
+                            <h4>subscription <br />{subscription?.length > 0 ? subscription?.length : 0}</h4>
                         </div>
                         <div className="profile-actions">
                             <button>Subscribe</button>

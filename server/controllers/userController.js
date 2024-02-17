@@ -111,6 +111,8 @@ const getOtherUserProfileHandler = async (req, res) => {
         return res.send(Error(404, 'User data not found'));
     }
 
+    await verifiedUserData.populate({ path: 'videos' });
+
     return res.send(Success(200, { verifiedUserData }));
 
 };

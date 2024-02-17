@@ -8,15 +8,22 @@ function Videos(video) {
     const navigate = useNavigate();
     const userIdForData = video.video.owner._id;
 
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState(null);
+    console.log(userData);
 
     async function handleProfileClick() {
 
-        const response = await axiosClient.post(`/user/profileOthers/${userIdForData}`, {
-            userIdForData
-        });
+        const response = await axiosClient.post(`/user/profileOthers/${userIdForData}`);
 
         const userDataObj = response.result.verifiedUserData;
+
+        if (userDataObj._id) {
+            navigate(`/profile/${userDataObj._id}`, {
+                state: {
+                    userData: userDataObj
+                }
+            })
+        }
         setUserData(userDataObj);
     }
 
