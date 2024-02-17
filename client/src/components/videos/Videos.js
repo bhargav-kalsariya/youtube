@@ -8,9 +8,6 @@ function Videos(video) {
     const navigate = useNavigate();
     const userIdForData = video.video.owner._id;
 
-    const [userData, setUserData] = useState(null);
-    console.log(userData);
-
     async function handleProfileClick() {
 
         const response = await axiosClient.post(`/user/profileOthers/${userIdForData}`);
@@ -24,7 +21,6 @@ function Videos(video) {
                 }
             })
         }
-        setUserData(userDataObj);
     }
 
     return (

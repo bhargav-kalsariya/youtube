@@ -25,8 +25,6 @@ function Login() {
             setItem(KEY_ACCESS_TOKEN, data.accessToken);
             navigate('/');
 
-            console.log("login", data);
-
         } catch (error) {
 
             console.error(error);

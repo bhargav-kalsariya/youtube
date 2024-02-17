@@ -98,7 +98,6 @@ const refreshTokenHandler = (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
         return res.send(Error(401, 'Invalid refresh token'));
 
     }
