@@ -14,7 +14,7 @@ function Sidebar() {
         <div className='Sidebar'>
             <div className="home">
                 <FaHome />
-                <h4>Home</h4>
+                <h4 onClick={() => { navigate('/') }}>Home</h4>
             </div>
             <div className="shorts">
                 <SiYoutubeshorts />
