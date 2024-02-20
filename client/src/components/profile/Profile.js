@@ -6,26 +6,13 @@ import Videos from '../videos/Videos';
 import { useLocation } from 'react-router-dom';
 
 function Profile() {
+
     const location = useLocation();
     const userData = location.state?.userData;
-    console.log(userData);
+    const currentUserData = location.state?.currentUserData;
+
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-
-    const [userInfo, setUserInfo] = useState([]);
-
-    useEffect(() => {
-        fetchMyVideos();
-    }, [])
-
-    async function fetchMyVideos() {
-
-        const response = await axiosClient.get('/user/profile');
-        const mapVideos = response.result?.currentVerifiedUserProfile;
-
-        setUserInfo(mapVideos);
-
-    }
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -38,17 +25,9 @@ function Profile() {
         if (response) {
             alert('video created successfully');
         }
-
     }
 
-    const defaultProfileDetails = {
-        email: `${userInfo.email}`,
-        subscribers: `${userInfo.subscribers}`,
-        subscription: `${userInfo.subscription} `,
-        videos: `${userInfo.videos}`
-    };
-
-    const { email, subscription, subscribers, videos } = userData || defaultProfileDetails;
+    const { email, subscription, subscribers, videos } = userData || currentUserData;
 
     return (
         <div className='Profile'>
@@ -85,7 +64,7 @@ function Profile() {
                         {
                             videos &&
                             <div className="video">
-                                {videos.map((video, index) => {
+                                {videos?.map((video, index) => {
                                     return <Videos key={index} video={video} />
                                 })}
                             </div>

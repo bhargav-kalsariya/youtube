@@ -34,7 +34,7 @@ function Video() {
                 {
                     videos &&
                     <div className="video">
-                        {videos.map((video, index) => {
+                        {videos?.map((video, index) => {
                             return <Videos key={index} video={video} />
                         })}
                     </div>
